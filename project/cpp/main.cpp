@@ -1,111 +1,87 @@
 #include<stdio.h>
-#include<stdlib.h>
-int n;
 
-
-typedef struct node node;
-
-struct node
-{
-    int v;
-    node *next;
-    node *last;
-}*head;
+int n, m, line[10][3], lst[100], res[10][3], tail=0;
 
 
 int input()
 {
-    int tmp, i;
-    node *p, *pre = NULL;
+    int i, j;
     FILE *fp = fopen("in.txt", "r");
     fscanf(fp, "%d", &n);
+    fscanf(fp, "%d", &m);
 
     for (i=0; i<n; i++)
-    {
-        fscanf(fp, "%d", &tmp);
-        p = (node *)malloc(sizeof(node));
-        p->v = tmp;
-        p->next = pre;
-        p->last = NULL;
-        if (i != 0)
-            pre->last = p;
-        pre = p;
-    }
-    head = p;
+        for (j=0; j<3; j++)
+            fscanf(fp, "%d", &line[i][j]);
+
+
+    lst[0] = line[0][0];
 
     fclose(fp);
     return 0;
 }
 
 
-
-
-int qs(node *p, int num)
+int checklst(int x)
 {
-    node *pre = p;
-    node *x = p->next;
-    node *after, *first = p;
-    int i, SumSmall=0, SumBig=0;
-
-    for (i=0; i<num-1; i++)
-    {
-
-
-        after = x->next;
-
-        if (x->v < p->v)
-        {
-            if (first == head)
-                head = x;
-            else
-                first->last->next = x;
-
-
-
-            if (x->next != NULL)
-                x->next->last = x->last;
-            x->last->next = x->next;
-            x->next = first;
-            x->last = first->last;
-            first->last = x;
-            first = x;
-            SumSmall++;
-        }
-        else
-            SumBig++;
-
-        x = after;
-    }
-    if (SumSmall > 1)
-        qs(first, SumSmall);
-    if (SumBig > 1)
-        qs(p->next, SumBig);
+    int i;
+    for (i=0; i<=tail; i++)
+        if (lst[i] == x)
+            return 1;
 
     return 0;
 }
 
+
+
+int prim()
+{
+    int i;
+    int sum = 0, a, b;
+    for (i=0; i<n; i++)
+    {
+        a = checklst(line[i][0]);
+        b = checklst(line[i][1]);
+        if ( ((!a)&&b) || (a&&(!b)) )
+            if (line[i][2]<line[sum][2] || sum==0)
+                sum = i;
+
+    }
+
+    for (i=0; i<3; i++)
+        res[tail][i] = line[sum][i];
+
+    if (checklst(res[tail][1]))
+        lst[tail+1] = res[tail][0];
+    else
+        lst[tail+1] = res[tail][1];
+
+    tail++;
+
+    return 0;
+}
 
 
 int output()
 {
-    int i;
+    int i, sum=0;
     FILE *fp = fopen("out.txt", "w");
+    for (i=0; i<m-1; i++)
+        sum += res[i][2];
 
-    for (i=0; i<n; i++)
-    {
-        fprintf(fp, "%d ", head->v);
-        head = head->next;
-    }
+    fprintf(fp, "%d\n", sum);
     fclose(fp);
     return 0;
 }
 
 
-
 int main()
 {
+    int i;
     input();
-    qs(head, n);
+    for (i=0; i<m-1; i++)
+        prim();
+
     output();
     return 0;
 }
