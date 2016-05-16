@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1447300936 source:d:\c_program\buyingstock\main.c
+	<stdio.h>
+	<winsock2.h>
+
+1447416941 source:d:\c_program\stock\project\main.c
+	<stdio.h>
+	<windows.h>
+

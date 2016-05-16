@@ -1,0 +1,25 @@
+# depslib dependency file v1.0
+1446540947 source:d:\c_program\misaka\misakamain.c
+	<stdio.h>
+	<windows.h>
+	"MisakaDeclare.h"
+	"MisakaOperatingSystem.h"
+	"MisakaTool.h"
+	"MisakaInterface.h"
+
+1446541014 d:\c_program\misaka\misakadeclare.h
+
+1446621207 d:\c_program\misaka\misakaoperatingsystem.h
+
+1446535914 d:\c_program\misaka\misakatool.h
+
+1446621213 d:\c_program\misaka\misakainterface.h
+
+1446621225 source:d:\c_program\misaka\misakamain.cpp
+	<stdio.h>
+	<windows.h>
+	"MisakaDeclare.h"
+	"MisakaOperatingSystem.h"
+	"MisakaTool.h"
+	"MisakaInterface.h"
+

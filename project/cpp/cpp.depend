@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1446359012 source:d:\c\project\cpp\main.cpp
+	<windows.h>
+	<locale.h>
+	<stdio.h>
+
+1461833039 
+
+1461833039 source:d:\c_program\project\cpp\main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+
+1463387036 source:/home/yy/Documents/c_program/project/cpp/main.cpp
+	<stdio.h>
+	<stdlib.h>
+
