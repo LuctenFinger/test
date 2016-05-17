@@ -1,93 +1,71 @@
 #include<stdio.h>
 
-int n;//number of line
-int m;//number of point
-int line[10][3], lst[10], res[10][3], tail=0;
+int res[10][10] = {};
+int maX;//bigest num
+int n;//line
+int m;//point
+int resa, resb;//answer point
+
 
 
 int input()
 {
-    int i, j;
+    int i, a, b;
     FILE *fp = fopen("in.txt", "r");
+    fscanf(fp, "%d", &maX);
     fscanf(fp, "%d", &n);
     fscanf(fp, "%d", &m);
+    fscanf(fp, "%d", &resa);
+    fscanf(fp, "%d", &resb);
 
     for (i=0; i<n; i++)
-        for (j=0; j<3; j++)
-            fscanf(fp, "%d", &line[i][j]);
+    {
+        fscanf(fp, "%d", &a);
+        fscanf(fp, "%d", &b);
+        fscanf(fp, "%d", &res[a][b]);
+        res[b][a] = res[a][b];
+    }
 
     fclose(fp);
     return 0;
 }
+
 
 
 int init()
 {
-    int i;
-    for (i=0; i<m; i++)
-        lst[i] = i;
+    int i, j;
+    for (i=0; i<=m; i++)
+        for (j=0; j<=m; j++)
+            if (i!=j && res[i][j]==0)
+                res[i][j] = maX;
+
     return 0;
 }
 
 
 
-int same(int x, int y)
+
+int floyd()
 {
-    int i;
-    int tmp = lst[y];
-    for (i=0; i<m; i++)
-        if (lst[i] == tmp)
-            lst[i] = lst[x];
-
+    int i, j, k;
+    for (i=0; i<=m; i++)
+        for (j=0; j<=m; j++)
+            for (k=0; k<=m; k++)
+                if (res[j][i]!=maX && res[i][k]!=maX &&
+                    res[j][k] > res[j][i]+res[i][k])
+                    res[j][k] = res[j][i]+res[i][k];
     return 0;
 }
 
 
-int kruskal()
-{
-    int i, sum = 0;
-    for (i=0; i<n; i++)
-    {
-        if (lst[line[i][0]] != lst[line[i][1]])
-            if (line[i][2]<line[sum][2] || sum==0)
-                sum = i;
-    }
-
-    if (lst[line[sum][0]] != lst[line[sum][1]])
-    {
-        same(line[sum][0], line[sum][1]);
-
-        for (i=0; i<3; i++)
-            res[tail][i] = line[sum][i];
-
-        tail++;
-    }
-
-    return 0;
-}
-
-
-int output()
-{
-    int i, sum=0;
-    FILE *fp = fopen("out.txt", "w");
-    for (i=0; i<m-1; i++)
-        sum += res[i][2];
-
-    fprintf(fp, "%d\n", sum);
-    fclose(fp);
-    return 0;
-}
 
 
 int main()
 {
-    int i;
     input();
     init();
-    for (i=0; i<m-1; i++)
-        kruskal();
-
-    output();
+    floyd();
+    printf("%d\n", res[resa][resb]);
     return 0;
 }
