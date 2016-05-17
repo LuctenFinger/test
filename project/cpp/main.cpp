@@ -1,6 +1,8 @@
 #include<stdio.h>
 
-int n, m, line[10][3], lst[100], res[10][3], tail=0;
+int n;//number of line
+int m;//number of point
+int line[10][3], lst[10], res[10][3], tail=0;
 
 
 int input()
@@ -14,49 +16,52 @@ int input()
         for (j=0; j<3; j++)
             fscanf(fp, "%d", &line[i][j]);
 
-
-    lst[0] = line[0][0];
-
     fclose(fp);
     return 0;
 }
 
 
-int checklst(int x)
+int init()
 {
     int i;
-    for (i=0; i<=tail; i++)
-        if (lst[i] == x)
-            return 1;
-
+    for (i=0; i<m; i++)
+        lst[i] = i;
     return 0;
 }
 
 
 
-int prim()
+int same(int x, int y)
 {
     int i;
-    int sum = 0, a, b;
+    int tmp = lst[y];
+    for (i=0; i<m; i++)
+        if (lst[i] == tmp)
+            lst[i] = lst[x];
+
+    return 0;
+}
+
+
+int kruskal()
+{
+    int i, sum = 0;
     for (i=0; i<n; i++)
     {
-        a = checklst(line[i][0]);
-        b = checklst(line[i][1]);
-        if ( ((!a)&&b) || (a&&(!b)) )
+        if (lst[line[i][0]] != lst[line[i][1]])
             if (line[i][2]<line[sum][2] || sum==0)
                 sum = i;
-
     }
 
-    for (i=0; i<3; i++)
-        res[tail][i] = line[sum][i];
+    if (lst[line[sum][0]] != lst[line[sum][1]])
+    {
+        same(line[sum][0], line[sum][1]);
 
-    if (checklst(res[tail][1]))
-        lst[tail+1] = res[tail][0];
-    else
-        lst[tail+1] = res[tail][1];
+        for (i=0; i<3; i++)
+            res[tail][i] = line[sum][i];
 
-    tail++;
+        tail++;
+    }
 
     return 0;
 }
@@ -79,8 +84,9 @@ int main()
 {
     int i;
     input();
+    init();
     for (i=0; i<m-1; i++)
-        prim();
+        kruskal();
 
     output();
     return 0;
