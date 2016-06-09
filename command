@@ -5,5 +5,5 @@
 
 
 git add .
-git commit -m "bring ooi"
+git commit -m "my first ooi"
 git push origin master
